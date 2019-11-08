@@ -11,6 +11,7 @@ Var GraphicsDriver, {Declaracion de variables}
 	board1: GameBoard;
 	w : ptrBoard;
 	c : char;
+	stay: boolean;
 	
 procedure drawMainMenu; {Dibuja el menu principal}
 begin
@@ -28,6 +29,29 @@ MoveTo(270, 240);
 OutText('A)bout');
 {MoveTo(270, 250);
 OutText('E)xit');}
+end;
+
+procedure drawHelp; {Dibuja el menu principal}
+begin
+ClearDevice;
+MoveTo(250,200);
+SetTextStyle(11,0,0);
+OutText('Ayuda del programa');
+MoveTo(90,210);
+OutText('Para jugar debe navegar el puntero con las siguientes teclas:');
+MoveTo(247,220);
+OutText('8 Mover hacia arriba');
+MoveTo(250,230);
+OutText('2 Mover hacia abajo');
+MoveTo(240, 240);
+OutText('4 Mover a la izquierda');
+MoveTo(249, 250);
+OutText('6 Mover a la derecha');
+MoveTo(270,270);
+outText('+ Pulsar boton');
+
+MoveTo(230,300);
+outText('Presione B para volver');
 end;
 
 procedure drawAbout; {Dibuja el menu principal}
@@ -82,6 +106,7 @@ end;
 
 begin {metodo principal }
 InitGraph(GraphicsDriver, GraphicsMode,'');
+	stay := true;
 	board1.init;
 	board1.move(1,1);
 	w := board1.getLogicMatrix;
@@ -149,12 +174,22 @@ InitGraph(GraphicsDriver, GraphicsMode,'');
 		begin 
 			drawAbout;
 		end;
+		if (c = 'h') or (c = 'H') then
+		begin 
+			drawHelp;
+			stay := true;
+			while(stay) do
+			begin
+				c := ' ';
+				c := Readkey;
+				if (c = 'B') or (c = 'b') then
+				begin 
+					stay := false;
+				end;
+			end;
+			drawMainMenu;			
+		end;
 	end;
-	
-	
-	
-	
-	
 readln;
 CloseGraph;
 end.
